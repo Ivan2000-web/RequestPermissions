@@ -1,5 +1,6 @@
 package com.vansoft.requestpermissions
 
+import android.Manifest
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,9 +13,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.vansoft.requestpermissions.ui.theme.RequestPermissionsTheme
 
+
 class MainActivity : ComponentActivity() {
+    private lateinit var permissionManager: PermissionManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        permissionManager = PermissionManager(this)
+
+        val permissions = arrayOf(
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.READ_PHONE_STATE
+        )
+
+        permissionManager.requestPermissions(permissions)
+
         setContent {
             RequestPermissionsTheme {
                 // A surface container using the 'background' color from the theme
@@ -26,6 +39,11 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        permissionManager.onRequestPermissionsResult(requestCode, permissions,grantResults)
     }
 }
 
