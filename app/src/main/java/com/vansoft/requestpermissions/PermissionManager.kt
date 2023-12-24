@@ -34,4 +34,13 @@ import androidx.core.content.ContextCompat
                 }
             }
         }
+
+        fun checkPermissions(permissions: Array<String>): Boolean {
+        for (permission in permissions) {
+            if (ContextCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false
+            }
+        }
+            return true
+        }
     }
