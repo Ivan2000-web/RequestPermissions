@@ -1,6 +1,7 @@
 package com.vansoft.requestpermissions
 
 import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -23,7 +24,8 @@ class MainActivity : ComponentActivity() {
 
         val permissions = arrayOf(
             Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.READ_PHONE_STATE
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.ACCESS_FINE_LOCATION
         )
 
         permissionManager.requestPermissions(permissions)
@@ -38,6 +40,14 @@ class MainActivity : ComponentActivity() {
                     Greeting("Android")
                 }
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //If Android 10 (API 29)+ request ACCESS_BACKGROUND_LOCATION
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            permissionManager.requestBackgroundLocationPermission()
         }
     }
 

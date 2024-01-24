@@ -4,8 +4,11 @@ import android.content.pm.PackageManager
 import androidx.activity.ComponentActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import android.Manifest
+import android.os.Build
+import androidx.annotation.RequiresApi
 
-    class PermissionManager(private val componentActivity: ComponentActivity) { //для xml заменить на AppCompatActivity
+class PermissionManager(private val componentActivity: ComponentActivity) { //для xml заменить на AppCompatActivity
 
         companion object {
             private const val PERMISSION_REQUEST_CODE = 123
@@ -43,4 +46,13 @@ import androidx.core.content.ContextCompat
         }
             return true
         }
+
+        @RequiresApi(Build.VERSION_CODES.Q)
+        fun requestBackgroundLocationPermission() {
+            val permission = Manifest.permission.ACCESS_BACKGROUND_LOCATION
+            if (ContextCompat.checkSelfPermission(componentActivity, permission) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(componentActivity, arrayOf(permission), PERMISSION_REQUEST_CODE)
+            }
+        }
+        
     }
